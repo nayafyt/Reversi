@@ -24,7 +24,6 @@ A Java implementation of the classic Reversi (Othello) board game with AI oppone
 - Maven 3.6 or higher
 
 ## Project Structure
-
 ```
 src/main/java/com/aueb/
 ├── Board.java      # Game board and evaluation logic

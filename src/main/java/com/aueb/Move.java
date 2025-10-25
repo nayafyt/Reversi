@@ -1,3 +1,4 @@
+package com.aueb;
 public class Move
 {
     private int row;

@@ -1,3 +1,4 @@
+package com.aueb;
 import java.util.ArrayList;
 import java.util.Random;
 
