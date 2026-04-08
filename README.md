@@ -1,78 +1,56 @@
-# Reversi Game
+# Reversi
 
-A Java implementation of the classic Reversi (Othello) board game with AI opponent using minimax algorithm.
+A full-stack Reversi (Othello) game with an AI opponent using the minimax algorithm.
 
 ## Features
 
-- Command line interface
-- AI opponent with 3 difficulty levels:
-  - Novice
-  - Medium 
-  - Expert
-- Sophisticated AI evaluation including:
-  - Corner control
-  - Mobility analysis
-  - Frontier discs strategy
-  - Stable discs counting
-  - Center control weighting
-  - Wedge patterns detection
-- Move validation and dynamic board updates
-
-## Prerequisites
-
-- Java 11 or higher
-- Maven 3.6 or higher
+- Interactive web UI with React
+- AI opponent with 3 difficulty levels (Easy, Medium, Hard)
+- Play as Black or White
+- Move hints, last-move highlight, and live score tracking
+- AI evaluation based on corner control, mobility, stability, frontier strategy, wedge patterns, and more
 
 ## Project Structure
+
 ```
-src/main/java/com/aueb/
-├── Board.java      # Game board and evaluation logic
-├── Move.java       # Move representation
-├── Player.java     # AI player implementation
-└── Main.java       # Game entry point and UI
+backend/           Spring Boot REST API (Java 17)
+frontend/          React UI (esbuild)
+docker-compose.yml Full-stack deployment
 ```
 
-## Building the Project
+## Running Locally
+
+**Backend:**
+```bash
+cd backend
+./mvnw spring-boot:run
+```
+
+**Frontend:**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open `http://localhost:3000` (frontend dev server).
+
+## Running with Docker
 
 ```bash
-mvn clean install
+docker compose up --build
 ```
 
-## Running the Game
+Frontend at `http://localhost:3000`, backend API at `http://localhost:8080`.
 
-```bash
-mvn exec:java -Dexec.mainClass="com.aueb.Main"
-```
+## API
 
-## How to Play
-
-1. Choose your color (B for Black or W for White)
-2. Select difficulty level (1-3)
-3. On your turn:
-   - View available moves
-   - Enter the number of your chosen move
-   - Watch the board update
-
-Game ends when:
-- No valid moves remain
-- Board is full
-- All pieces are one color
-
-## Technical Details
-
-The AI uses:
-- Minimax algorithm with varying depths based on difficulty
-- Complex position evaluation including:
-  - Corner ownership
-  - Edge stability
-  - Disc mobility
-  - Center control
-  - Frontier minimization
+| Method | Endpoint         | Description          |
+|--------|------------------|----------------------|
+| POST   | /api/game/new    | Start a new game     |
+| POST   | /api/game/move   | Make a player move   |
+| GET    | /api/game/state  | Get current state    |
 
 ## Authors
 
 Naya Fytali, Sara Mourelatou, Sofia Vergi
-
-## License
-
-This project is available under the MIT License.
