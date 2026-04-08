@@ -1,38 +1,28 @@
 package com.aueb;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 public class Main {
     public static int skipP = 0;
     public static int skipC = 0;
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         int playerLetter = 0;
         int computerLetter = 0;
-        Scanner input = new Scanner (System.in);
-        System.out.println("To start the game choose your color \nType B for black and W for white (Black pieces start first)");
-        String playerColor = input.nextLine();
-        while (playerLetter == 0){
-            if (playerColor.equals("B")){
-                playerLetter = Board.B;
-                computerLetter = Board.W;
-                break;
-            }else if (playerColor.equals("W")){
-                playerLetter = Board.W;
-                computerLetter = Board.B;
-                break;
-            }else{
-                System.out.println( "Your input should be either the letter B or W");
-                playerColor = input.nextLine();
-            }
+
+        // Default values if no args provided
+        String playerColor = args.length > 0 ? args[0] : "B";
+        int level = args.length > 1 ? Integer.parseInt(args[1]) : 1;
+
+        if (playerColor.equals("B")) {
+            playerLetter = Board.B;
+            computerLetter = Board.W;
+        } else if (playerColor.equals("W")) {
+            playerLetter = Board.W;
+            computerLetter = Board.B;
         }
 
-        System.out.println("Choose level: " );
-        System.out.println("1: Novice \n2: Medium \n3: Expert");
-        int level = input.nextInt();
-        while (level<=0 && level>3){
-            System.out.println("your choice isn't valid choose a number from 1-3");
-            level = input.nextInt();
+        // Validate level
+        if (level < 1 || level > 3) {
+            level = 1;
         }
 
         Player player = new Player(level+1,playerLetter);
@@ -59,7 +49,7 @@ public class Main {
                                 System.out.println(i+1 +" :  row:" +rcList.get(i).getRow()+" column: "+rcList.get(i).getCol());
                             }
                             System.out.println("What move will you make (place number)");
-                            int mchoice = input.nextInt();
+                            int mchoice = new java.util.Scanner(System.in).nextInt();
                             int row = rcList.get(mchoice-1).getRow();
                             int col = rcList.get(mchoice-1).getCol();                          
                                        
@@ -101,7 +91,7 @@ public class Main {
                                 System.out.println(i+1 +" :  row:" +rcList.get(i).getRow()+" column: "+rcList.get(i).getCol());
                             }
                             System.out.println("What move will you make (place number)");
-                            int mchoice = input.nextInt();
+                            int mchoice = new java.util.Scanner(System.in).nextInt();
                             int row = rcList.get(mchoice-1).getRow();
                             int col = rcList.get(mchoice-1).getCol();                                          
 
