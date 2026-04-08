@@ -43,7 +43,6 @@ public class GameService {
         gameOver = false;
         message = null;
 
-        // If computer is Black, it goes first (Black always starts)
         if (computerLetter == Board.B) {
             computerMove();
         }
@@ -57,14 +56,9 @@ public class GameService {
             return buildState();
         }
 
-        ArrayList<Move> available = board.getavailableMoves(playerLetter);
-        boolean valid = false;
-        for (Move m : available) {
-            if (m.getRow() == row && m.getCol() == col) {
-                valid = true;
-                break;
-            }
-        }
+        List<Move> available = board.getAvailableMoves(playerLetter);
+        boolean valid = available.stream()
+                .anyMatch(m -> m.getRow() == row && m.getCol() == col);
 
         if (!valid) {
             message = "Invalid move.";
@@ -73,18 +67,16 @@ public class GameService {
 
         skipPlayer = 0;
         board.makeMove(row, col, playerLetter);
-        board.switcher(new Move(row, col, playerLetter));
+        board.flipDiscs(new Move(row, col, playerLetter));
         message = null;
 
         if (checkGameOver()) return buildState();
 
-        // Computer responds
         computerMove();
 
         if (checkGameOver()) return buildState();
 
-        // Check if player has moves, if not, skip and let computer go again
-        while (!gameOver && board.getavailableMoves(playerLetter).isEmpty()) {
+        while (!gameOver && board.getAvailableMoves(playerLetter).isEmpty()) {
             skipPlayer++;
             if (skipPlayer >= 1 && skipComputer >= 1) {
                 gameOver = true;
@@ -103,9 +95,7 @@ public class GameService {
     }
 
     private void computerMove() {
-        ArrayList<Move> computerMoves = board.getavailableMoves(computerLetter);
-
-        if (computerMoves.isEmpty()) {
+        if (board.getAvailableMoves(computerLetter).isEmpty()) {
             skipComputer++;
             if (skipPlayer >= 1 && skipComputer >= 1) {
                 gameOver = true;
@@ -115,12 +105,9 @@ public class GameService {
         }
 
         skipComputer = 0;
-        Move aiMove;
-        if (computerLetter == Board.B) {
-            aiMove = computer.max(new Board(board), 0);
-        } else {
-            aiMove = computer.min(new Board(board), 0);
-        }
+        Move aiMove = (computerLetter == Board.B)
+                ? computer.max(new Board(board), 0)
+                : computer.min(new Board(board), 0);
 
         if (aiMove.getRow() < 0 || aiMove.getCol() < 0) {
             skipComputer++;
@@ -130,7 +117,7 @@ public class GameService {
         }
 
         board.makeMove(aiMove.getRow(), aiMove.getCol(), computerLetter);
-        board.switcher(new Move(aiMove.getRow(), aiMove.getCol(), computerLetter));
+        board.flipDiscs(new Move(aiMove.getRow(), aiMove.getCol(), computerLetter));
     }
 
     private boolean checkGameOver() {
@@ -146,13 +133,15 @@ public class GameService {
         state.setBoard(board.getGameBoard());
         state.setPlayerColor(playerLetter == Board.B ? "B" : "W");
 
-        int bCount = 0, wCount = 0;
+        int bCount = 0;
+        int wCount = 0;
         int[][] gb = board.getGameBoard();
-        for (int r = 0; r < 8; r++)
+        for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
                 if (gb[r][c] == Board.B) bCount++;
                 else if (gb[r][c] == Board.W) wCount++;
             }
+        }
         state.setBlackCount(bCount);
         state.setWhiteCount(wCount);
         state.setGameOver(gameOver);
@@ -163,15 +152,14 @@ public class GameService {
             else state.setWinner("DRAW");
         }
 
-        // Available moves for the player
         if (!gameOver) {
-            ArrayList<Move> moves = board.getavailableMoves(playerLetter);
+            List<Move> moves = board.getAvailableMoves(playerLetter);
             List<int[]> movePairs = new ArrayList<>();
             for (Move m : moves) movePairs.add(new int[]{m.getRow(), m.getCol()});
             state.setAvailableMoves(movePairs);
             state.setCurrentPlayer("PLAYER");
         } else {
-            state.setAvailableMoves(new ArrayList<>());
+            state.setAvailableMoves(List.of());
         }
 
         Move last = board.getLastMove();
