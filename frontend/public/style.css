@@ -195,16 +195,6 @@ h1 {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-.disc.new {
-  animation: pop 0.3s ease;
-}
-
-@keyframes pop {
-  0% { transform: scale(0); }
-  70% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
 /* Controls */
 .controls {
   display: flex;
@@ -262,12 +252,6 @@ h1 {
   color: #ffd54f;
   font-weight: 600;
   font-size: 1.1rem;
-}
-
-/* Loading */
-.loading {
-  color: #4fc3f7;
-  font-size: 0.9rem;
 }
 
 /* Responsive */

@@ -9,10 +9,6 @@ async function request(path, options = {}) {
   return res.json();
 }
 
-export function getState() {
-  return request("/state");
-}
-
 export function newGame(playerColor, level) {
   return request("/new", {
     method: "POST",

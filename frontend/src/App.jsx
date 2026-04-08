@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Board from "./components/Board.jsx";
-import { getState, newGame, makeMove } from "./api.js";
+import { newGame, makeMove } from "./api.js";
 
 const EMPTY_BOARD = Array.from({ length: 8 }, () => Array(8).fill(0));
 
